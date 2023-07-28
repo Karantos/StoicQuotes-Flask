@@ -45,6 +45,8 @@
     <Content Include="requirements.txt" />
     <Content Include="website\templates\index.html" />
     <Content Include="website\templates\layout.html" />
+    <Content Include="website\templates\login.html" />
+    <Content Include="website\templates\register.html" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
