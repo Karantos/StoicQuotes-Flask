@@ -1,1 +1,1 @@
-# StoicQuotesFlaskWebApp
+# Stoic Quotes - Flask
