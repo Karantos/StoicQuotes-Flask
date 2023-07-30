@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="website\static\styles.css" />
     <Content Include="website\templates\favourites.html" />
     <Content Include="website\templates\index.html" />
     <Content Include="website\templates\layout.html" />
