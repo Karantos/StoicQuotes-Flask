@@ -19,7 +19,7 @@
                     <td>{{ quote.text }} </td>
                     <td>{{ quote.author }}</td>
                     <td>
-                        <form action="/favourites" method="post">
+                        <form class="inline" action="/favourites" method="post">
                             <input name="id" type="hidden" value="{{ quote.id }}" />
                             <button type="submit" class="btn btn-secondary">Delete</button>
                         </form>

@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from sqlalchemy import insert
 from .models import Quote, User
 import urllib.request, json
 from . import db
@@ -13,6 +12,7 @@ def index():
         text = request.form.get("text")
         author = request.form.get("author")
         user_id = User.get_id(current_user)
+        
         if text:
             quote_insert = Quote(text=text, author=author, user_id=user_id)
             db.session.add(quote_insert)
@@ -39,7 +39,9 @@ def favourites():
     if request.method == 'POST':
         id = request.form.get("id")
         if id:           
-            Quote.query.filter_by(id=id).delete()
+            quote = Quote.query.filter_by(id=id).one()
+            db.session.delete(quote)
+            db.session.commit()
 
             flash('Quote deleted from favourites!', category='success')
             return redirect(url_for('views.favourites'))

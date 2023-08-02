@@ -1,4 +1,4 @@
-// Script that gets more quotes from server (used jquery)
+// Script that uses ajax to update only part of the page (used jquery)
 $(document).on('click', '#get-quotes', function () {
     $('#quotes-table').load('/get_quotes')
 });

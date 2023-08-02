@@ -9,11 +9,13 @@
             <div class="card-body">
                 <p class="card-title"><b><i>{{ result.text }}</i></b></p>
                 <p class="card-text"><i>{{ result.author }}</i></p>
-                <form action="/" method="post">
+                {% if current_user.is_authenticated %}
+                <form class="inline" action="/" method="post">
                     <input name="text" type="hidden" value="{{ result.text }}" />
                     <input name="author" type="hidden" value="{{ result.author }}" />
                     <button type="submit" class="btn btn-secondary">Add to favourites</button>
                 </form>
+                {% endif %}
                 <button type="button" class="btn btn-secondary" id="get-quote">Get another quote</button>
                 <button type="button" class="btn btn-secondary" id="get-quotes">Get more quotes</button>
             </div>
