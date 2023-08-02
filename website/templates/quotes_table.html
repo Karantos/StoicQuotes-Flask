@@ -12,7 +12,11 @@
             <td>{{ quote.text }} </td>
             <td>{{ quote.author }}</td>
             <td>
-                <a href="#" class="btn btn-secondary">Add to favourites</a>
+                <form class="inline" action="/" method="post">
+                    <input name="text" type="hidden" value="{{ quote.text }}" />
+                    <input name="author" type="hidden" value="{{ quote.author }}" />
+                    <button type="submit" class="btn btn-secondary">Add to favourites</button>
+                </form>
             </td>
         </tr>
         {% endfor %}

@@ -4,3 +4,7 @@
     border-collapse: separate !important;
 }
 
+form {
+    display: inline-block;
+}
+

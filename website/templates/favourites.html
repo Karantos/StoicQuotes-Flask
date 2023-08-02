@@ -3,5 +3,31 @@
 {% block title %}Favourites{% endblock %}
 
 {% block content %}
-<h1>This is the favourites page.</h1>
+<div class="row justify-content-center">
+    <div class="col-sm-9 mt-4">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Text</th>
+                    <th scope="col">Author</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for quote in quotes %}
+                <tr>
+                    <td>{{ quote.text }} </td>
+                    <td>{{ quote.author }}</td>
+                    <td>
+                        <form action="/favourites" method="post">
+                            <input name="id" type="hidden" value="{{ quote.id }}" />
+                            <button type="submit" class="btn btn-secondary">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

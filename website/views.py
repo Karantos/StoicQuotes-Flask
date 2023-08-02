@@ -1,14 +1,28 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from sqlalchemy import insert
+from .models import Quote, User
 import urllib.request, json
+from . import db
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        pass
+        text = request.form.get("text")
+        author = request.form.get("author")
+        user_id = User.get_id(current_user)
+        if text:
+            quote_insert = Quote(text=text, author=author, user_id=user_id)
+            db.session.add(quote_insert)
+            db.session.commit()
 
+            flash('Quote added to favourites!', category='success')
+            return redirect(url_for('views.index'))
+        else:
+            flash('No quote found.', category='error')
+            
     else:
         url = "https://stoic-quotes.com/api/quote"
         # get response data (stoic quote from above url)
@@ -19,10 +33,23 @@ def index():
 
         return render_template('index.html', result = dict)
 
-@views.route('/favourites')
+@views.route('/favourites', methods=['GET', 'POST'])
 @login_required
 def favourites():
-    return render_template('favourites.html')
+    if request.method == 'POST':
+        id = request.form.get("id")
+        if id:           
+            Quote.query.filter_by(id=id).delete()
+
+            flash('Quote deleted from favourites!', category='success')
+            return redirect(url_for('views.favourites'))
+        else:
+            flash('No quote found.', category='error')
+
+    else:
+        quotes = Quote.query
+
+        return render_template('favourites.html', quotes = quotes)
 
 @views.route('/get_quotes')
 def get_quotes():
