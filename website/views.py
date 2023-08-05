@@ -11,18 +11,16 @@ def index():
     if request.method == 'POST':
         text = request.form.get("text")
         author = request.form.get("author")
-        user_id = User.get_id(current_user)
-        
-        if text:
-            quote_insert = Quote(text=text, author=author, user_id=user_id)
-            db.session.add(quote_insert)
-            db.session.commit()
 
-            flash('Quote added to favourites!', category='success')
-            return redirect(url_for('views.index'))
-        else:
-            flash('No quote found.', category='error')
-            
+        user_id = User.get_id(current_user)
+
+        quote_insert = Quote(text=text, author=author, user_id=user_id)
+        db.session.add(quote_insert)
+        db.session.commit()
+
+        flash('Quote added to favourites!', category='success')
+        return redirect(url_for('views.index'))
+
     else:
         url = "https://stoic-quotes.com/api/quote"
         # get response data (stoic quote from above url)

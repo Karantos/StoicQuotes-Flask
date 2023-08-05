@@ -1,4 +1,3 @@
-import email
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -67,3 +66,53 @@ def register():
 
         return render_template('register.html')
 
+@auth.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        username = request.form.get('username')
+
+        user_id = User.get_id(current_user)
+
+        if len(email) < 4:
+            flash('Email must be at least 4 characters long.', category='error')
+        elif len(username) < 2:
+            flash('Username must be at least 2 characters long.', category='error')
+        else:
+            User.query.filter_by(id=user_id).update(dict(username=username, email=email))
+            db.session.commit()
+            flash('Profile updated!', category='success')
+            return redirect(url_for('views.index'))
+
+        return render_template('edit_profile.html')
+    else:
+
+        return render_template('edit_profile.html')
+
+@auth.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+        old_password = request.form.get('password')
+        new_password = request.form.get('new-password')
+        confirmation = request.form.get('confirm-password')
+
+        user_id = User.get_id(current_user)
+        user = User.query.filter_by(id=user_id).first()
+
+        if not check_password_hash(user.password, old_password):
+            flash('Passwords is incorrect!', category='error')
+        elif new_password != confirmation:
+            flash('Passwords do not match.', category='error')
+        elif len(new_password) < 7:
+            flash('Password must be at least 7 characters long.', category='error')
+        else:
+            User.query.filter_by(id=user_id).update(dict(password=generate_password_hash(new_password, method='sha256')))
+            db.session.commit()
+            flash('Password changed!', category='success')
+            logout_user()
+            return redirect(url_for('auth.login'))
+
+        return render_template('change_password.html')
+    else:
+
+        return render_template('change_password.html')

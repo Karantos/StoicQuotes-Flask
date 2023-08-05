@@ -47,10 +47,12 @@
     <Content Include="requirements.txt" />
     <Content Include="website\static\scripts.js" />
     <Content Include="website\static\styles.css" />
+    <Content Include="website\templates\change_password.html" />
     <Content Include="website\templates\favourites.html" />
     <Content Include="website\templates\index.html" />
     <Content Include="website\templates\layout.html" />
     <Content Include="website\templates\login.html" />
+    <Content Include="website\templates\edit_profile.html" />
     <Content Include="website\templates\quotes_table.html" />
     <Content Include="website\templates\register.html" />
   </ItemGroup>
