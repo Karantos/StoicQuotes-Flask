@@ -47,9 +47,16 @@ def favourites():
             flash('No quote found.', category='error')
 
     else:
-        quotes = Quote.query
+        user_id = User.get_id(current_user)
+        quotes = Quote.query.filter_by(user_id=user_id).all()
 
-        return render_template('favourites.html', quotes = quotes)
+        if quotes:
+            return render_template('favourites.html', quotes = quotes)
+
+        else:
+            flash('You have no quotes added to favourites.', category='error')                       
+            return redirect(url_for('views.index'))
+            
 
 @views.route('/get_quotes')
 def get_quotes():
