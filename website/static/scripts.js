@@ -6,3 +6,9 @@ $(document).on('click', '#get-quotes', function () {
 $(document).on('click', '#get-quote', function () {
     $('#quote').load('/ #quote')
 });
+
+$(document).ready(function () {
+    $('#navbarNavDarkDropdown').on('keypress', function () {
+        $(this).dropdown('toggle');
+    });
+});

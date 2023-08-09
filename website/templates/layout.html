@@ -35,21 +35,19 @@
                             <i class="bi-box-arrow-in-left" aria-label="logout"></i>
                         </a>
                     </li>
-                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown collapse navbar-collapse" id="navbarNavDarkDropdown">
-                                <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ current_user.email }}
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark">
-                                    <li><a class="dropdown-item" href="/edit_profile">Edit Profile</a></li>
-                                    <li><a class="dropdown-item" href="/change_password">Change password</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="navbar-nav collapse navbar-collapse" id="navbarNavDarkDropdown" tabindex="0">
+                        <li class="nav-item dropdown collapse navbar-collapse" id="navbarNavDarkDropdown">
+                            <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ current_user.email }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" id="navbarOptions">
+                                <li><a class="dropdown-item" href="/edit_profile" tabindex="0">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="/change_password" tabindex="0">Change password</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </ul>
-                        
+
                 {% endif %}
                 {% if not current_user.is_authenticated %}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
