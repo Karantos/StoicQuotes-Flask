@@ -309,7 +309,26 @@ def get_quotes():
 This route is used to get a list of stoic quotes from the https://stoic-quotes.com/api/quotes URL. The code then converts the JSON data to a Python dictionary and renders the quotes table page with the list of quotes.
 
 ### static/scripts.js
+THis file contains JavaScript that uses AJAX to update only part of a web page. AJAX stands for Asynchronous JavaScript and XML. It is a technique that allows web pages to communicate with a server without having to reload the entire page.
+
+The code is divided into three parts:
+
+The first part binds the click event to the element with id `#get-quotes`. When the user clicks on this element, the code calls the `load()` method on the element with id `#quotes-table`. The `load()` method tells the browser to load the content of the `/get_quotes` route (that renders `quotes-table.html`) into the element with id `#quotes-table`.
+
+The second part binds the click event to the element with id `#get-quote`. When the user clicks on this element, the code calls the `load()` method on the element with id `#quote`. The `load()` method tells the browser to load the content of the `/ #quote` route (part of content in `index.html` with id of `#quote`) into the element with id `#quote`. 
+
+The third part binds the keypress event to the element with id `#navbarNavDarkDropdown`. When the user presses a key on this element, the code calls the `dropdown('toggle')` method on the element and tells the browser to toggle the dropdown menu.
 
 ### static/styles.css
+In this file is come css code that adds some custom styling to elements `.table` class.
 
 ### templates/..
+In templates folder there are multiple html files that show various parts of the page, i.e. `index.html`, `layout.html`, `register.html`, `login.html`. **Jinja templating engine** was used for dynamic content.
+
+## Tools used
+* Flask
+* Jinja2
+* Werkzeug
+* Flask-Login
+* Flask-SQLAlchemy
+
