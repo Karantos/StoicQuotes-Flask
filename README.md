@@ -31,10 +31,10 @@ The structure of my project is:
 
 Below is more detailed description of what each file does:
 
-#### app.py
+### app.py
 Script inside this file runs the application using a development server.
 
-#### website/\_\_init.py__
+### website/\_\_init.py__
 The code `db = SQLAlchemy()` creates a new instance of the SQLAlchemy class. This class is used to interact with a database. In this case, the database is a SQLite database named quotes.db. The database is created in the same folder as the Flask app. The SQLAlchemy class provides a number of methods for interacting with the database, such as `create_all()`, which creates all of the tables in the database, and `query()`, which allows you to select data from the database.
 
 ```
@@ -78,17 +78,17 @@ def load_user(id):
 ```
 This function is used to load a user from the database by their ID. The `login_manager.user_loader` decorator tells Flask-Login to use this function to load users.
 
-#### website/models.py
+### website/models.py
 The code inside models.py defines two classes: `User` and `Quote`. These classes are used to represent users and quotes in a relational database.
 
 The `User` class inherits from the `db.Model` class and the `UserMixin` class. The `db.Model` class is a base class for all SQLAlchemy models. The `UserMixin` class provides some useful methods for user authentication, such as `is_authenticated()` and `get_id()`.
 
 In the `User` class `db.relationship()` method is used to define a relationship between two models. In this case, the `quotes` relationship defines a one-to-many relationship between the `User` model and the `Quote` model. This means that a user can have many quotes and a quote can only have one user.
 
-#### website/auth.py
+### website/auth.py
 Code inside auth.py handles user registration, login, logout, edit profile and change password and contains the corresponding routes.
 
-The /login route is defined as follows:
+The `/login` route is defined as follows:
 
 ```
 @auth.route('/login', methods=['GET', 'POST'])
@@ -111,7 +111,7 @@ def login():
 ```
 This route first checks if the request method is POST. If it is, the code gets the username and password from the request form. The code then queries the database for a user with the given username. If a user is found, the code checks the password against the user's password hash. If the password is correct, the code logs the user in and redirects to the index page. Otherwise, the code displays an error message.
 
-The /logout route is defined as follows:
+The `/logout` route is defined as follows:
 
 ```
 @auth.route('/logout')
@@ -122,7 +122,7 @@ def logout():
 ```
 This route is only accessible to logged-in users. When a user logs out, the code clears the user's session and redirects to the login page.
 
-The /register route is defined as follows:
+The `/register` route is defined as follows:
 
 ```
 @auth.route('/register', methods=['GET', 'POST'])
@@ -161,7 +161,7 @@ This route first checks if the request method is POST. If it is, the code gets t
 
 The code then checks if the password and confirmation password match. If they do not match, the code displays an error message. If all of the checks pass, the code creates a new user with the given information and saves it to the database. The code then redirects the user to the index page.
 
-The /edit_profile route is defined as follows:
+The `/edit_profile` route is defined as follows:
 
 ```
 @auth.route('/edit_profile', methods=['GET', 'POST'])
@@ -191,7 +191,7 @@ If the request method is POST, the code gets the new email and username from the
 
 If the checks pass, the code updates the user's email and username in the database. The code then redirects the user to the index page.
 
-The /change_password route is defined as follows:
+The `/change_password` route is defined as follows:
 
 ```
 @auth.route('/change_password', methods=['GET', 'POST'])
@@ -228,4 +228,88 @@ The code then checks if the old password entered by the user matches the passwor
 
 The code then checks if the new password and confirmation password match. If they do not match, the code displays an error message. If all of the checks pass, the code updates the user's password in the database. The code then logs the user out and redirects the user to the login page.
 
-#### website/views.py
+### website/views.py
+The `/` route is defined as follows:
+
+```
+@views.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        text = request.form.get("text")
+        author = request.form.get("author")
+
+        user_id = User.get_id(current_user)
+
+        quote_insert = Quote(text=text, author=author, user_id=user_id)
+        db.session.add(quote_insert)
+        db.session.commit()
+
+        flash('Quote added to favourites!', category='success')
+        return redirect(url_for('views.index'))
+    else:
+        url = "https://stoic-quotes.com/api/quote"
+        # get response data (stoic quote from above url)
+        response = urllib.request.urlopen(url)
+        data = response.read()
+        # convert json data to python dict
+        dict = json.loads(data)
+
+        return render_template('index.html', result = dict)
+```
+This route is the homepage of the application. It gets a stoic quotes from the https://stoic-quotes.com/api/quote URL and displays it on the page.
+
+If the request method is POST, the code gets the text and author of the quote from the request form. The code then creates a new quote object and saves it to the database and the user can then view it on `/favourites` page. The code then redirects the user to the homepage.
+
+The `/favourites` route is defined as follows:
+
+```
+@views.route('/favourites', methods=['GET', 'POST'])
+@login_required
+def favourites():
+    if request.method == 'POST':
+        id = request.form.get("id")
+        if id:           
+            quote = Quote.query.filter_by(id=id).one()
+            db.session.delete(quote)
+            db.session.commit()
+
+            flash('Quote deleted from favourites!', category='success')
+            return redirect(url_for('views.favourites'))
+        else:
+            flash('No quote found.', category='error')
+    else:
+        user_id = User.get_id(current_user)
+        quotes = Quote.query.filter_by(user_id=user_id).all()
+
+        if quotes:
+            return render_template('favourites.html', quotes = quotes)
+
+        else:
+            flash('You have no quotes added to favourites.', category='error')                 
+            return redirect(url_for('views.index'))
+```
+This route is used to manage the favorites of the logged-in user. If the request method is POST, the code gets the ID of the quote to be deleted from the request form. The code then deletes the quote from the database and redirects the user to the favorites page.
+
+If the request method is GET, the code gets the ID of the logged-in user. The code then gets all of the quotes that the user has added to their favorites and renders the favorites page with the list of quotes.
+
+The `/get_quotes` route is defined as follows:
+
+```
+@views.route('/get_quotes')
+def get_quotes():
+    url = "https://stoic-quotes.com/api/quotes"
+    # get response data (stoic quote from above url)
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    # convert json data to python dict
+    quotes = json.loads(data)
+
+    return render_template('quotes_table.html', quotes = quotes)
+```
+This route is used to get a list of stoic quotes from the https://stoic-quotes.com/api/quotes URL. The code then converts the JSON data to a Python dictionary and renders the quotes table page with the list of quotes.
+
+### static/scripts.js
+
+### static/styles.css
+
+### templates/..
