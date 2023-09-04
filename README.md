@@ -5,8 +5,8 @@ App made as a final project for [Harvard CS50x course](https://cs50.harvard.edu/
 
 Used **Flask** with **Jinja templating engine** for building the webpage. Used **SQLite** with **SQLAlchemy** to save users and their favourite quotes to db and **Flask-Login** to handle user auhthenthication.
 
-### Video Demo: [Stoic Quotes Web App](https://studio.youtube.com/video/HtdNKQfF-dQ/edit)
-[Here](https://studio.youtube.com/video/HtdNKQfF-dQ/edit) you can see a preview of Stoic Quotes Web App.
+### Video Demo: [Stoic Quotes Web App](https://studio.youtube.com/video/HtdNKQfF-dQ)
+[Here](https://studio.youtube.com/video/HtdNKQfF-dQ) you can see a preview of Stoic Quotes Web App.
 
 ## Description
 The structure of my project is:
@@ -45,7 +45,7 @@ app.config['SECRET_KEY'] = 'janrepar jflsjglalg'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///' + os.path.join(basedir, 'quotes.db')
 db.init_app(app)
 ```
-These lines inside `def create_app()` function create a new Flask app and configure it with a secret key. The secret key is used to encrypt cookies and other sensitive data. The SQLALCHEMY_DATABASE_URI configuration setting is set to the location of the database file. The `db.init_app(app)` line tells the SQLAlchemy instance to bind itself to the Flask app. This means that the SQLAlchemy instance will be available to all of the views and other components of the Flask app.
+These lines inside `def create_app()` function create a new Flask app and configure it with a secret key (secret key for šrpduction should be kept in production config which must never be commited to repository). The secret key is used to encrypt cookies and other sensitive data. The SQLALCHEMY_DATABASE_URI configuration setting is set to the location of the database file. The `db.init_app(app)` line tells the SQLAlchemy instance to bind itself to the Flask app. This means that the SQLAlchemy instance will be available to all of the views and other components of the Flask app.
 
 ```
 from .views import views
@@ -320,7 +320,7 @@ The second part binds the click event to the element with id `#get-quote`. When 
 The third part binds the keypress event to the element with id `#navbarNavDarkDropdown`. When the user presses a key on this element, the code calls the `dropdown('toggle')` method on the element and tells the browser to toggle the dropdown menu.
 
 ### static/styles.css
-In this file is come css code that adds some custom styling to elements `.table` class.
+This file contains css code that adds some custom styling to elements `.table` class.
 
 ### templates/..
 In templates folder there are multiple html files that show various parts of the page, i.e. `index.html`, `layout.html`, `register.html`, `login.html`. **Jinja templating engine** was used for dynamic content.
