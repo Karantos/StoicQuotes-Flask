@@ -5,8 +5,8 @@ App made as a final project for [Harvard CS50x course](https://cs50.harvard.edu/
 
 Used **Flask** with **Jinja templating engine** for building the webpage. Used **SQLite** with **SQLAlchemy** to save users and their favourite quotes to db and **Flask-Login** to handle user auhthenthication.
 
-### Video Demo: [Stoic Quotes Web App](https://studio.youtube.com/video/HtdNKQfF-dQ)
-[Here](https://studio.youtube.com/video/HtdNKQfF-dQ) you can see a preview of Stoic Quotes Web App.
+### Video Demo: [Stoic Quotes Web App](https://www.youtube.com/watch?v=HtdNKQfF-dQ&t=11s)
+[Here](https://www.youtube.com/watch?v=HtdNKQfF-dQ&t=11s) you can see a preview of Stoic Quotes Web App.
 
 ## Description
 The structure of my project is:
